@@ -1,117 +1,170 @@
-# Project Requirements Document: codeguide-starter
-
----
+# Project Requirements Document: Taman Kehati Frontend
 
 ## 1. Project Overview
 
-The **codeguide-starter** project is a boilerplate web application that provides a ready-made foundation for any web project requiring secure user authentication and a post-login dashboard. It sets up the common building blocks—sign-up and sign-in pages, API routes to handle registration and login, and a simple dashboard interface driven by static data. By delivering this skeleton, it accelerates development time and ensures best practices are in place from day one.
+Taman Kehati is a web-based platform designed to showcase and manage biodiversity data—flora, fauna, and related news—within protected parks. It consists of two main parts: a public-facing website where visitors can explore information, interactive maps, and a conversational assistant, and an Admin CMS portal where authorized personnel can log in, create or update content, and view real-time statistics. By unifying content management and public presentation in one codebase, Taman Kehati simplifies workflows, ensures data consistency, and delivers an engaging user experience.
 
-This starter kit is being built to solve the friction developers face when setting up repeated common tasks: credential handling, session management, page routing, and theming. Key objectives include: 1) delivering a fully working authentication flow (registration & login), 2) providing a gated dashboard area upon successful login, 3) establishing a clear, maintainable project structure using Next.js and TypeScript, and 4) demonstrating a clean theming approach with global and section-specific CSS. Success is measured by having an end-to-end login journey in under 200 lines of code and zero runtime type errors.
+The project is being built to replace fragmented spreadsheets and static sites with a modern, secure, and scalable application. Key objectives include:
+
+•  Implement a role-based Admin portal for Super Admins and Regional Admins, with secure authentication and fine-grained access controls.
+•  Deliver dynamic content management for flora, fauna, and news items, complete with approval workflows and statistical dashboards.
+•  Provide a responsive, fast public website with dedicated pages, an interactive map, and a chatbot interface.
+•  Meet performance, security, and usability standards so that pages load quickly, data is protected, and visitors of all abilities can navigate the site.
+
+Success will be measured by: a fully functional login and RBAC system, content creation and approval flows, a polished public UI, less than 2-second page loads, and passing accessibility audits.
 
 ---
 
 ## 2. In-Scope vs. Out-of-Scope
 
-### In-Scope (Version 1)
-- User registration (sign-up) form with validation
-- User login (sign-in) form with validation
-- Next.js API routes under `/api/auth/route.ts` handling:
-  - Credential validation
-  - Password hashing (e.g., bcrypt)
-  - Session creation or JWT issuance
-- Protected dashboard pages under `/dashboard`:
-  - `layout.tsx` wrapping dashboard content
-  - `page.tsx` rendering static data from `data.json`
-- Global application layout in `/app/layout.tsx`
-- Basic styling via `globals.css` and `dashboard/theme.css`
-- TypeScript strict mode enabled
+**In-Scope (Version 1):**
 
-### Out-of-Scope (Later Phases)
-- Integration with a real database (PostgreSQL, MongoDB, etc.)
-- Advanced authentication flows (password reset, email verification, MFA)
-- Role-based access control (RBAC)
-- Multi-tenant or white-label theming
-- Unit, integration, or end-to-end testing suites
-- CI/CD pipeline and production deployment scripts
+•  Admin Authentication & Authorization (Super Admin, Regional Admin)
+•  Admin Dashboard layout with header, sidebar, and main content area
+•  Content management pages for:
+   - Flora (CRUD, filter by status, search, pagination)
+   - Fauna (CRUD, filter by status, search, pagination)
+   - Berita/News (CRUD, filter, search, pagination)
+•  Workflow Status tracking (Draft, Pending Approval, Published, Rejected)
+•  Summary cards and interactive charts for national and regional statistics
+•  Public Website pages: Home (`/`), Taman (`/taman`), Flora (`/flora`), Fauna (`/fauna`), Berita (`/berita`)
+•  Shared public Layout with Header and Footer
+•  Basic Interactive Map component (Leaflet or Mapbox)
+•  Chatbot UI connected to `/api/public/chat`
+•  Dynamic data fetching via React Query and REST API endpoints
+•  Middleware or ProtectedRoute component for RBAC enforcement
+•  Unit and integration tests (Jest, React Testing Library)
+•  End-to-end tests for key flows (Playwright or Cypress)
+
+**Out-of-Scope (Planned Later):**
+
+•  Multi-language support and localization
+•  Offline or mobile-first native applications
+•  Social login integrations (Google, Facebook)
+•  Advanced analytics (machine learning or AI-driven insights)
+•  Bulk import/export of content via CSV/Excel
+•  Custom theming or white-labeling options
 
 ---
 
 ## 3. User Flow
 
-A new visitor lands on the root URL and sees a welcome page with options to **Sign Up** or **Sign In**. If they choose Sign Up, they fill in their email, password, and hit “Create Account.” The form submits to `/api/auth/route.ts`, which hashes the password, creates a new user session or token, and redirects them to the dashboard. If any input is invalid, an inline error message explains the issue (e.g., “Password too short”).
+**Admin User Journey:**
+A new admin visits the `/login` page and signs in with their email and password. After authentication, they land on the Admin Dashboard overview. Depending on their role (Super Admin or Regional Admin), they see navigation links in the sidebar for managing Flora, Fauna, and Berita, as well as a Statistics section. When they click on "Flora", they see a table of existing records, can filter by workflow status, search by name, and use pagination to browse more items. They can click "Add New" to open a form, fill in details, and submit for approval. Super Admins can also view a queue of pending items, approve or reject them via a modal, and the action updates the item's workflow status.
 
-Once authenticated, the user is taken to the `/dashboard` route. Here they see a sidebar or header defined by `dashboard/layout.tsx`, and the main panel pulls in static data from `data.json`. They can log out (if that control is present), but otherwise their entire session is managed by server-side cookies or tokens. Returning users go directly to Sign In, submit credentials, and upon success they land back on `/dashboard`. Any unauthorized access to `/dashboard` redirects back to Sign In.
+**Public Visitor Journey:**
+A visitor lands on the Home page (`/`), which features a hero section, a search bar, and quick links to Flora, Fauna, and Taman information. They click on "Flora" to see a grid or list of plants, with basic filters and search. They can view individual detail pages for each species. A map embedded on the Flora page highlights distribution points. At any time, they can open the chatbot in the bottom corner, enter a question about species or park rules, and receive a response fetched from `/api/public/chat`. On mobile devices, all components adapt to a single-column layout.
 
 ---
 
 ## 4. Core Features
 
-- **Sign-Up Page (`/app/sign-up/page.tsx`)**: Form fields for email & password, client-side validation, POST to `/api/auth`.
-- **Sign-In Page (`/app/sign-in/page.tsx`)**: Form fields for email & password, client-side validation, POST to `/api/auth`.
-- **Authentication API (`/app/api/auth/route.ts`)**: Handles both registration and login based on HTTP method, integrates password hashing (bcrypt) and session or JWT logic.
-- **Global Layout (`/app/layout.tsx` + `globals.css`)**: Shared header, footer, and CSS resets across all pages.
-- **Dashboard Layout (`/app/dashboard/layout.tsx` + `dashboard/theme.css`)**: Sidebar or top nav for authenticated flows, section-specific styling.
-- **Dashboard Page (`/app/dashboard/page.tsx`)**: Reads `data.json`, renders it as cards or tables.
-- **Static Data Source (`/app/dashboard/data.json`)**: Example dataset to demo dynamic rendering.
-- **TypeScript Configuration**: `tsconfig.json` with strict mode and path aliases (if any).
+- **Authentication & Role-Based Access Control**  
+  Secure login with Next.js middleware or ProtectedRoute, two roles (Super Admin, Regional Admin), region-limited operations.
+
+- **Admin Dashboard Layout**  
+  Persistent header, collapsible sidebar, main content area following a consistent design system.
+
+- **Content Management (CRUD)**  
+  - Flora, Fauna, Berita modules  
+  - DataTable with columns, filters (WorkflowStatus), search, pagination  
+  - Create/Edit forms, status badges, rejection modal
+
+- **Workflow & Approvals**  
+  Content status life cycle (Draft → Pending Approval → Published/Rejected), approval queue for Super Admins.
+
+- **Statistics & Charts**  
+  Summary cards, interactive charts (Recharts) showing national and regional KPIs.
+
+- **Public Website**  
+  Static and dynamic pages: Home, Taman, Flora, Fauna, Berita; shared public layout.
+
+- **Interactive Map**  
+  Map component for species distribution (Leaflet or Mapbox).
+
+- **Chatbot Interface**  
+  UI component connected to `/api/public/chat` for visitor questions.
+
+- **Data Fetching & State Management**  
+  React Query for server state, custom hooks (`useFloraList`), services in `services/api.ts`.
+
+- **Testing Suite**  
+  Unit/integration tests (Jest, React Testing Library), end-to-end tests (Playwright/Cypress).
 
 ---
 
 ## 5. Tech Stack & Tools
 
-- **Framework**: Next.js (App Router) for file-based routing, SSR/SSG, and API routes.
-- **Language**: TypeScript for type safety.
-- **UI Library**: React 18 for component-based UI.
-- **Styling**: Plain CSS via `globals.css` (global reset) and `theme.css` (sectional styling). Can easily migrate to CSS Modules or Tailwind in the future.
-- **Backend**: Node.js runtime provided by Next.js API routes.
-- **Password Hashing**: bcrypt (npm package).
-- **Session/JWT**: NextAuth.js or custom JWT logic (to be decided in implementation).
-- **IDE & Dev Tools**: VS Code with ESLint, Prettier extensions. Optionally, Cursor.ai for AI-assisted coding.
+- **Frontend Framework:** Next.js 15 (App Router) with TypeScript
+- **Styling & UI Components:** Tailwind CSS, shadcn/ui, Radix UI
+- **State & Data Fetching:** @tanstack/react-query (React Query), custom hooks
+- **Authentication & ORM:** Drizzle ORM with PostgreSQL, Better Auth boilerplate
+- **Charts & Visualization:** Recharts
+- **Map Library:** Leaflet or Mapbox GL JS
+- **Testing:** Jest, React Testing Library, Playwright or Cypress
+- **Linting & Formatting:** ESLint, Prettier
+- **IDE Integrations (Optional):** VSCode with Cursor or Windsurf plugins
 
 ---
 
 ## 6. Non-Functional Requirements
 
-- **Performance**: Initial page load under 200 ms on a standard broadband connection. API responses under 300 ms.
-- **Security**:
-  - HTTPS only in production.
-  - Proper CORS, CSRF protection for API routes.
-  - Secure password storage (bcrypt with salt).
-  - No credentials or secrets checked into version control.
-- **Scalability**: Structure must support adding database integration, caching layers, and advanced auth flows without rewiring core app.
-- **Usability**: Forms should give real-time feedback on invalid input. Layout must be responsive (mobile > 320 px).
-- **Maintainability**: Code must adhere to TypeScript strict mode. Linting & formatting enforced by ESLint/Prettier.
+- **Performance:**  
+  - First meaningful paint under 2 seconds on 4G connection  
+  - Subsequent data fetches under 100ms latency  
+  - Code-splitting and lazy loading for routes and heavy components
+
+- **Security:**  
+  - All API routes protected by HTTPS and middleware checks  
+  - OWASP best practices (XSS, CSRF, SQL injection defenses)  
+  - Secure HTTP-only cookies or JWT for session management
+
+- **Usability & Accessibility:**  
+  - WCAG 2.1 AA compliance (semantic HTML, ARIA labels, keyboard navigation)  
+  - Mobile-responsive across common breakpoints  
+  - Clear error messaging and form validation
+
+- **Scalability & Maintainability:**  
+  - Modular component library via shadcn/ui  
+  - Clean folder structure (`app/`, `components/`, `services/`, `db/`)  
+  - Type-safe code with TypeScript
+
+- **Compliance:**  
+  - GDPR-ready consent banners if user data is collected  
+  - Data residency per regional admin scope
 
 ---
 
 ## 7. Constraints & Assumptions
 
-- **No Database**: Dashboard uses only `data.json`; real database integration is deferred.
-- **Node Version**: Requires Node.js >= 14.
-- **Next.js Version**: Built on Next.js 13+ App Router.
-- **Authentication**: Assumes availability of bcrypt or NextAuth.js at implementation time.
-- **Hosting**: Targets serverless or Node.js-capable hosting (e.g., Vercel, Netlify).
-- **Browser Support**: Modern evergreen browsers; no IE11 support required.
+- **Next.js v15** features (App Router, middleware) will be available and stable.
+- **Drizzle ORM** supports schema migrations for adding `role` and `region_code` fields.
+- **API Endpoints** for flora, fauna, berita, and chatbot are implemented or mocked.
+- **Map API Key** will be provided for Leaflet/Mapbox usage.
+- **Hosting Environment:** Node.js 18+ with PostgreSQL database access.
+- **Users** have modern browsers; IE11 support is not required.
 
 ---
 
 ## 8. Known Issues & Potential Pitfalls
 
-- **Static Data Limitation**: `data.json` is only for demo. A real API or database will be needed to avoid stale data.
-  *Mitigation*: Define a clear interface for data fetching so swapping to a live endpoint is trivial.
+- **API Rate Limits:**  
+  High-frequency calls from React Query may hit server limits; implement request debouncing and rate-limiting middleware.
 
-- **Global CSS Conflicts**: Using global styles can lead to unintended overrides.
-  *Mitigation*: Plan to migrate to CSS Modules or utility-first CSS in Phase 2.
+- **Large Data Sets:**  
+  Rendering huge tables may slow down the UI; use virtualization (e.g., react-window) if needed.
 
-- **API Route Ambiguity**: Single `/api/auth/route.ts` handling both sign-up and sign-in could get complex.
-  *Mitigation*: Clearly branch on HTTP method (`POST /register` vs. `POST /login`) or split into separate files.
+- **Role-Based Caching:**  
+  Caching data per user role might leak restricted data; ensure cache keys include role and region identifiers.
 
-- **Lack of Testing**: No test suite means regressions can slip in.
-  *Mitigation*: Build a minimal Jest + React Testing Library setup in an early iteration.
+- **Map Performance & Licensing:**  
+  Map libraries can be heavy; lazy-load the map component and optimize tile usage. Check Mapbox license if chosen.
 
-- **Error Handling Gaps**: Client and server must handle edge cases (network failures, malformed input).
-  *Mitigation*: Define a standard error response schema and show user-friendly messages.
+- **Content Approval Race Conditions:**  
+  Simultaneous approvals could conflict; use optimistic UI updates and server-side locking or version checks.
+
+Mitigation guidelines: set conservative fetch intervals, introduce virtualization for large lists, tag cache entries with role-based keys, and handle map code splitting. Conduct regular security audits and load tests before production launch.
 
 ---
 
-This PRD should serve as the single source of truth for the AI model or any developer generating the next set of technical documents: Tech Stack Doc, Frontend Guidelines, Backend Structure, App Flow, File Structure, and IDE Rules. It contains all functional and non-functional requirements with no ambiguity, enabling seamless downstream development.
+This document serves as the single source of truth for the Taman Kehati frontend. Every requirement is spelled out in clear, everyday language to allow the AI model—or any developer—to build the application without ambiguity.
