@@ -1,3 +1,5 @@
+# Security Guideline Document
+
 # Security Guidelines for `taman-kehati-frontend-1`
 
 This document outlines the security principles, controls, and best practices for the **Taman Kehati** frontend application, based on a Next.js (App Router) + TypeScript + Tailwind CSS + shadcn/ui + Radix UI stack, with React Query for data fetching and Drizzle ORM + PostgreSQL for persistence. Adhering to these guidelines will help protect the application and its data from common threats and vulnerabilities.
@@ -102,3 +104,13 @@ This document outlines the security principles, controls, and best practices for
 ---
 
 By following these guidelines, the **Taman Kehati** frontend will achieve a strong security posture, safeguarding data integrity, confidentiality, and availability for both administrators and public users.
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: 345e5b7d-c212-428e-bdf5-69ed22a06e51
+- **Type**: custom
+- **Custom Type**: security_guideline_document
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:36:57.861Z
+- **Last Updated**: N/A

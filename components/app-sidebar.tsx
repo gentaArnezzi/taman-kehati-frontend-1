@@ -5,23 +5,36 @@ import Link from "next/link"
 import Image from "next/image"
 import { useSession } from "@/lib/auth-client"
 import {
-  IconCamera,
-  IconChartBar,
-  IconDashboard,
-  IconDatabase,
-  IconFileAi,
-  IconFileDescription,
-  IconFileWord,
-  IconFolder,
-  IconHelp,
-  IconListDetails,
-  IconReport,
-  IconSearch,
-  IconSettings,
-  IconUsers,
-} from "@tabler/icons-react"
+  TreePine,
+  Bird,
+  Flower,
+  BookOpen,
+  Map,
+  Users,
+  Settings,
+  MessageCircle,
+  GalleryVertical,
+  Calendar,
+  BarChart3,
+  User,
+  FileText,
+  Database,
+  UserCog,
+  Shield,
+  FolderOpen,
+  Camera,
+  Search,
+  HelpCircle,
+  Newspaper,
+  Megaphone,
+  ClipboardList,
+  TrendingUp,
+  Eye,
+  Bell,
+  Layers,
+  Activity
+} from "lucide-react"
 
-import { NavDocuments } from "@/components/nav-documents"
 import { NavMain } from "@/components/nav-main"
 import { NavSecondary } from "@/components/nav-secondary"
 import { NavUser } from "@/components/nav-user"
@@ -35,130 +48,165 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const staticData = {
-  navMain: [
+// Role-based navigation items
+const getNavigationItems = (role?: string) => {
+  const baseItems = [
     {
       title: "Dashboard",
-      url: "#",
-      icon: IconDashboard,
+      url: "/dashboard",
+      icon: BarChart3,
     },
     {
-      title: "Lifecycle",
-      url: "#",
-      icon: IconListDetails,
+      title: "Profil Taman",
+      url: "/dashboard/taman",
+      icon: TreePine,
     },
     {
-      title: "Analytics",
-      url: "#",
-      icon: IconChartBar,
+      title: "Flora Taman",
+      url: "/dashboard/taman/flora",
+      icon: Flower,
     },
     {
-      title: "Projects",
-      url: "#",
-      icon: IconFolder,
+      title: "Fauna Taman",
+      url: "/dashboard/taman/fauna",
+      icon: Bird,
     },
     {
-      title: "Team",
-      url: "#",
-      icon: IconUsers,
-    },
-  ],
-  navClouds: [
-    {
-      title: "Capture",
-      icon: IconCamera,
-      isActive: true,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
+      title: "Galeri",
+      url: "/dashboard/galeri",
+      icon: GalleryVertical,
     },
     {
-      title: "Proposal",
-      icon: IconFileDescription,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
+      title: "Agenda",
+      url: "/dashboard/agenda",
+      icon: Calendar,
+    },
+  ];
+
+  const superAdminItems = [
+    {
+      title: "Manajemen Pengguna",
+      url: "/dashboard/users",
+      icon: UserCog,
     },
     {
-      title: "Prompts",
-      icon: IconFileAi,
-      url: "#",
-      items: [
-        {
-          title: "Active Proposals",
-          url: "#",
-        },
-        {
-          title: "Archived",
-          url: "#",
-        },
-      ],
-    },
-  ],
-  navSecondary: [
-    {
-      title: "Settings",
-      url: "#",
-      icon: IconSettings,
+      title: "Antrian Persetujuan",
+      url: "/dashboard/approvals",
+      icon: ClipboardList,
     },
     {
-      title: "Get Help",
-      url: "#",
-      icon: IconHelp,
+      title: "Pengumuman",
+      url: "/dashboard/announcements",
+      icon: Megaphone,
     },
     {
-      title: "Search",
-      url: "#",
-      icon: IconSearch,
-    },
-  ],
-  documents: [
-    {
-      name: "Data Library",
-      url: "#",
-      icon: IconDatabase,
+      title: "Audit Log",
+      url: "/dashboard/logs/audit",
+      icon: Activity,
     },
     {
-      name: "Reports",
-      url: "#",
-      icon: IconReport,
+      title: "Data & Statistik",
+      url: "/dashboard/data",
+      icon: BarChart3,
     },
     {
-      name: "Word Assistant",
-      url: "#",
-      icon: IconFileWord,
+      title: "Pengaturan Sistem",
+      url: "/dashboard/settings",
+      icon: Settings,
     },
-  ],
-}
+  ];
+
+  const regionalAdminItems = [
+    {
+      title: "Pengumuman",
+      url: "/dashboard/announcements",
+      icon: Bell,
+    },
+    {
+      title: "Profil Regional",
+      url: "/dashboard/profile",
+      icon: User,
+    },
+  ];
+
+  const publicItems = [
+    {
+      title: "Artikel",
+      url: "/artikel",
+      icon: Newspaper,
+    },
+    {
+      title: "Peta Interaktif",
+      url: "/peta",
+      icon: Map,
+    },
+    {
+      title: "Indeks Keanekaragaman",
+      url: "/indeks",
+      icon: TrendingUp,
+    },
+  ];
+
+  let items = [...baseItems];
+
+  if (role === 'SUPER_ADMIN') {
+    items = [...items, ...superAdminItems];
+  } else if (role === 'REGIONAL_ADMIN') {
+    items = [...items, ...regionalAdminItems];
+  }
+
+  return items;
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession()
-  
+  const { data: session } = useSession();
+
   const userData = session?.user ? {
-    name: session.user.name || "User",
-    email: session.user.email,
-    avatar: session.user.image || "/codeguide-logo.png",
+    name: session.user.name || "Admin",
+    email: session.user.email || "",
+    avatar: session.user.image || "",
+    role: session.user.role || "USER",
   } : {
     name: "Guest",
-    email: "guest@example.com", 
-    avatar: "/codeguide-logo.png",
-  }
+    email: "guest@example.com",
+    avatar: "",
+    role: "GUEST",
+  };
+
+  const navigationItems = getNavigationItems(userData.role);
+
+  const navSecondary = [
+    {
+      title: "Artikel",
+      url: "/artikel",
+      icon: Newspaper,
+    },
+    {
+      title: "Peta Interaktif",
+      url: "/peta",
+      icon: Map,
+    },
+    {
+      title: "Indeks Keanekaragaman",
+      url: "/indeks",
+      icon: TrendingUp,
+    },
+    {
+      title: "Pengaturan",
+      url: "/dashboard/akun",
+      icon: Settings,
+    },
+    {
+      title: "Bantuan",
+      url: "#",
+      icon: HelpCircle,
+    },
+  ];
+
+  // Filter secondary nav based on role
+  const filteredNavSecondary = session?.user ? navSecondary : navSecondary.filter(item =>
+    ['/artikel', '/peta', '/indeks'].includes(item.url)
+  );
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -169,18 +217,32 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <Link href="/">
-                <Image src="/codeguide-logo.png" alt="CodeGuide" width={32} height={32} className="rounded-lg" />
-                <span className="text-base font-semibold font-parkinsans">CodeGuide</span>
+              <Link href={session?.user ? "/dashboard" : "/"}>
+                <div className="bg-green-600 rounded-lg p-1 mr-2">
+                  <TreePine className="h-6 w-6 text-white" />
+                </div>
+                <span className="text-base font-semibold bg-gradient-to-r from-green-600 via-emerald-500 to-teal-400 bg-clip-text text-transparent">
+                  Taman Kehati
+                </span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={staticData.navMain} />
-        <NavDocuments items={staticData.documents} />
-        <NavSecondary items={staticData.navSecondary} className="mt-auto" />
+        {session?.user ? (
+          <>
+            <NavMain items={navigationItems} />
+            <NavSecondary items={filteredNavSecondary} className="mt-auto" />
+          </>
+        ) : (
+          <div className="px-3 py-2">
+            <p className="text-sm text-gray-500 mb-4">
+              Silakan login untuk mengakses fitur lengkap.
+            </p>
+            <NavSecondary items={filteredNavSecondary} />
+          </div>
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={userData} />

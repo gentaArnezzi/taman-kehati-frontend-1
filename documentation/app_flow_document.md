@@ -1,5 +1,7 @@
 # App Flow Document
 
+# App Flow Document
+
 ## Onboarding and Sign-In/Sign-Up
 When a new user wants to manage the Taman Kehati dashboard, they begin by navigating to the public URL and clicking the "Admin Login" link in the header. This brings them to the sign-in page at `/login`, where they enter their email address and password. If they have forgotten their password, they click the "Forgot Password" link to open a reset email form. They type their registered email and receive a password recovery link, which directs them to a secure page to set a new password. Once they create a new password, they return to the sign-in page and log in normally. The app does not provide a self-serve sign-up for admins; new admin accounts are created by a Super Admin within the Admin Settings area. After login, users can choose to sign out by clicking their profile avatar in the top right and selecting "Sign Out," which returns them to the public homepage.
 
@@ -21,3 +23,13 @@ If users enter incorrect credentials on the login page, the form displays a red 
 
 ## Conclusion and Overall App Journey
 From start to finish, the user journey begins at the public homepage, where visitors can explore Taman information and use the chatbot for quick answers. Admin users arrive at the sign-in page to authenticate, then access the dashboard overview with summary cards and interactive charts. They navigate through Flora, Fauna, and Berita management pages to create, edit, and release content. Role-based controls ensure Super Admins oversee all regions and handle approvals, while Regional Admins manage only their assigned areas. Account settings let admins update their details and notification preferences at any time. Throughout the app, clear error messages and recovery paths guide users back to a normal flow whenever they face issues. This complete journey supports both public engagement with Taman Kehati and efficient content management in the Admin CMS.
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: d731fe5e-a2b2-4b16-99b4-8dbf4c1b0454
+- **Type**: custom
+- **Custom Type**: app_flow_document
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:35:46.223Z
+- **Last Updated**: N/A

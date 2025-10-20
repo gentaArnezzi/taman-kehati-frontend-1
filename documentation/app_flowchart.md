@@ -1,3 +1,5 @@
+# App Flowchart
+
 flowchart TD
     Start[Start] --> PublicNav[Public Navigation]
     PublicNav -->|Public Home| Home[Home Page]
@@ -28,3 +30,13 @@ flowchart TD
     UpdateSuccess --> Dashboard
     Dashboard --> Logout[Logout]
     Logout --> End[End]
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: be39b4bd-41f9-46d7-a648-ba704fcd099f
+- **Type**: custom
+- **Custom Type**: app_flowchart
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:36:07.638Z
+- **Last Updated**: N/A

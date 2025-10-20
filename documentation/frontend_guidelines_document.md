@@ -1,3 +1,5 @@
+# Frontend Guidelines Document
+
 # Frontend Guideline Document for Taman Kehati
 
 This document lays out the frontend architecture, design principles, technologies, and best practices for the Taman Kehati platform. It’s written in plain language so that anyone—technical or not—can understand how the frontend is built, why certain choices were made, and how to extend or maintain it.
@@ -127,3 +129,13 @@ This document lays out the frontend architecture, design principles, technologie
 ## 9. Conclusion and Overall Frontend Summary
 
 The Taman Kehati frontend combines modern frameworks and clear design principles to deliver a scalable, maintainable, and high-performance application. With Next.js and TypeScript at its core, a consistent Tailwind-based design system, and robust state management via React Query, it’s ready to handle both public-facing pages and a rich Admin CMS. Accessibility, responsive layout, and thorough testing ensure a great experience for all users. Unique aspects—like role-based dashboards, interactive maps, and integrated chatbot—set this project apart and can be built confidently on the solid foundation described here.
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: 46bf9c38-22c8-4729-b660-822d5be08d8e
+- **Type**: custom
+- **Custom Type**: frontend_guidelines_document
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:36:37.159Z
+- **Last Updated**: N/A

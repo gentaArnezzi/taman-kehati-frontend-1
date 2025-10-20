@@ -1,3 +1,5 @@
+# Project Requirements Document
+
 # Project Requirements Document: Taman Kehati Frontend
 
 ## 1. Project Overview
@@ -168,3 +170,13 @@ Mitigation guidelines: set conservative fetch intervals, introduce virtualizatio
 ---
 
 This document serves as the single source of truth for the Taman Kehati frontend. Every requirement is spelled out in clear, everyday language to allow the AI model—or any developer—to build the application without ambiguity.
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: 55996437-6951-4676-986e-2b6e52d83f55
+- **Type**: custom
+- **Custom Type**: project_requirements_document
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:34:54.366Z
+- **Last Updated**: N/A

@@ -11,6 +11,12 @@
 7. [Komponen UI/UX](#komponen-uiux)
 8. [Integrasi API](#integrasi-api)
 9. [Responsivitas dan Aksesibilitas](#responsivitas-dan-aksesibilitas)
+10. [Fitur Tambahan](#fitur-tambahan)
+    - [Biodiversity Index](#biodiversity-index)
+    - [Announcements System](#announcements-system)
+    - [Audit Log & Change History](#audit-log--change-history)
+    - [Article Pages](#article-pages)
+    - [Enhanced Interactive Map](#enhanced-interactive-map)
 
 ---
 
@@ -1242,6 +1248,242 @@ const OptimizedImage: React.FC<OptimizedImageProps> = ({
 
 ---
 
+---
+
+## 10. Fitur Tambahan
+
+### Biodiversity Index
+
+Indeks Keanekaragaman Hayati adalah metrik untuk mengukur tingkat keanekaragaman hayati di setiap Taman Kehati. Untuk MVP, diimplementasikan sebagai placeholder dengan input manual.
+
+**Fitur Utama:**
+- **Dashboard Nasional**: Overview skor biodiversity seluruh Indonesia
+- **Peta Sebaran**: Visualisasi skor per provinsi dengan warna gradasi
+- **Top Performers**: Ranking taman dengan skor tertinggi
+- **Input Manual**: Form input data flora, fauna, dan ekosistem (MVP)
+- **Trend Visualization**: Grafik perubahan skor dari waktu ke waktu (Phase 2)
+
+**Struktur Data:**
+```typescript
+interface BiodiversityIndex {
+  id: string;
+  parkId: string;
+  assessmentDate: Date;
+  totalFloraSpecies: number;
+  totalFaunaSpecies: number;
+  floraDiversityScore: number; // 0-100
+  faunaDiversityScore: number; // 0-100
+  ecosystemScore: number; // 0-100
+  overallBiodiversityScore: number; // 0-100
+  status: 'DRAFT' | 'PENDING' | 'APPROVED' | 'REJECTED';
+}
+```
+
+**Halaman:**
+- `/indeks` - Public biodiversity index overview
+- `/admin/biodiversity` - Admin dashboard untuk input data
+
+**File Referensi:** `documentation/biodiversity-index-documentation.md`
+
+### Announcements System
+
+Sistem pengumuman memungkinkan Super Admin untuk membuat dan mengirim pengumuman kepada Regional Admin dengan fitur targeting dan tracking.
+
+**Fitur Utama:**
+- **Multi-target Broadcasting**: Kirim ke semua admin, per provinsi, user spesifik, atau per role
+- **Rich Text Editor**: Konten pengumuman dengan formatting lengkap
+- **Priority Levels**: Low, Medium, High, Urgent dengan visualisasi berbeda
+- **Read Tracking**: Monitor status baca dan notifikasi badge
+- **Archive System**: Arsip pengumuman lama
+- **Attachments**: Upload dokumen pendukung
+- **Scheduled Publishing**: Terbitkan pengumuman di waktu tertentu
+
+**Workflow:**
+1. Super Admin buat pengumuman (Draft → Published)
+2. Regional Admin lihat notifikasi unread di dashboard
+3. Regional Admin baca, mark as read, atau archive
+4. System track read count dan engagement metrics
+
+**Halaman:**
+- `/admin/announcements` - Manajemen pengumuman (Super Admin)
+- Dashboard Regional Admin - Notifikasi pengumuman baru
+
+**File Referensi:** `documentation/announcements-system-documentation.md`
+
+### Audit Log & Change History
+
+Sistem audit logging mencatat semua aktivitas sistem untuk compliance, security monitoring, dan troubleshooting.
+
+**Fitur Utama:**
+- **Comprehensive Logging**: Semua CRUD operations, login, approval workflows
+- **Change Detection**: Track field-level changes dengan before/after values
+- **Advanced Filtering**: Filter berdasarkan user, action, entity, tanggal
+- **Search Functionality**: Pencarian text pada deskripsi dan entity names
+- **Severity Levels**: Low, Medium, High, Critical dengan visualisasi berbeda
+- **Export Function**: Export logs dalam format JSON/CSV
+- **Real-time Monitoring**: Dashboard untuk critical events
+
+**Audit Actions:**
+- Data Changes: CREATE, UPDATE, DELETE
+- User Actions: LOGIN, LOGOUT, PROFILE_UPDATE
+- Workflow: SUBMIT, APPROVE, REJECT
+- System: EXPORT, BACKUP, ROLE_CHANGES
+
+**Halaman:**
+- `/admin/logs/audit` - Audit log dashboard (Super Admin only)
+
+**File Referensi:** `documentation/audit-log-documentation.md`
+
+### Article Pages
+
+Sistem manajemen artikel untuk publikasi berita, informasi konservasi, dan konten edukasi.
+
+**Fitur Utama:**
+- **Rich Text Editor**: Artikel dengan media support dan formatting
+- **Category System**: News, Conservation, Research, Education, dll
+- **SEO Optimization**: Meta tags, custom slugs, search engine friendly
+- **Public Interface**: Article listing dengan search, filter, dan pagination
+- **Engagement Tracking**: View count, like, share, dan comment system
+- **Featured Articles**: Artikel pilihan di homepage
+- **Author Attribution**: Informasi penulis dan institusi
+
+**Public Features:**
+- Artikel list dengan filter kategori dan tags
+- Search functionality
+- Related articles suggestions
+- Social sharing integration
+- Reading time estimation
+
+**Admin Features:**
+- Create/edit articles dengan approval workflow
+- Media management
+- SEO meta configuration
+- Analytics dashboard
+- Comment moderation
+
+**Halaman:**
+- `/artikel` - Public article listing
+- `/artikel/[slug]` - Article detail page
+- `/admin/content/articles` - Article management
+
+**File Referensi:** `documentation/articles-documentation.md`
+
+### Enhanced Interactive Map
+
+Peta interaktif dengan integrasi PostGIS untuk visualisasi data geospasial yang canggih.
+
+**Fitur Utama:**
+- **PostGIS Integration**: Spatial queries dengan indexing untuk performance
+- **Advanced Clustering**: Smart grouping untuk data density management
+- **Multi-layer Visualization**: Layers untuk biodiversity index, status, kategori
+- **Dynamic Filtering**: Filter berdasarkan provinsi, skor biodiversity, luas area
+- **Interactive Tooltips**: Popup dengan informasi detail dan statistics
+- **Export Capabilities**: Export data dalam GeoJSON, CSV, JSON format
+- **Responsive Design**: Optimized untuk desktop dan mobile
+
+**Map Features:**
+- Park boundaries dengan color-coded biodiversity scores
+- Clustering untuk dense areas
+- Province filtering dengan boundary visualization
+- Search by park name or coordinate
+- Click-to-view detail sidebar
+- Legend dan layer controls
+
+**Technical Stack:**
+- Mapbox GL JS atau Leaflet dengan custom plugins
+- PostGIS untuk spatial queries
+- GeoJSON API endpoints dengan caching
+- Spatial indexing untuk optimal performance
+
+**Halaman:**
+- `/peta` - Enhanced interactive map
+
+**File Referensi:** `documentation/interactive-map-enhanced.md`
+
+---
+
+## 11. Integrasi Fitur Tambahan dengan Sistem Utama
+
+### API Endpoint Structure
+
+```
+/api/biodiversity/          # Biodiversity index CRUD
+/api/announcements/         # Announcements management
+/api/audit-logs/           # Audit log access (admin only)
+/api/articles/             # Public and admin articles
+/api/geo/parks/            # Enhanced map data with PostGIS
+```
+
+### Database Schema Extensions
+
+```sql
+-- Biodiversity Index
+CREATE TABLE biodiversity_index (
+  id UUID PRIMARY KEY,
+  park_id UUID REFERENCES parks(id),
+  flora_score INTEGER,
+  fauna_score INTEGER,
+  ecosystem_score INTEGER,
+  overall_score INTEGER,
+  assessment_date DATE,
+  status VARCHAR(20) DEFAULT 'DRAFT'
+);
+
+-- Announcements
+CREATE TABLE announcements (
+  id UUID PRIMARY KEY,
+  title VARCHAR(255) NOT NULL,
+  content TEXT NOT NULL,
+  target_type VARCHAR(20) NOT NULL,
+  target_ref VARCHAR(255),
+  created_by UUID REFERENCES users(id),
+  published_at TIMESTAMP,
+  read_count INTEGER DEFAULT 0
+);
+
+-- Articles
+CREATE TABLE articles (
+  id UUID PRIMARY KEY,
+  title VARCHAR(500) NOT NULL,
+  slug VARCHAR(500) UNIQUE,
+  content TEXT NOT NULL,
+  category VARCHAR(50),
+  author_id UUID REFERENCES users(id),
+  status VARCHAR(20) DEFAULT 'DRAFT',
+  view_count INTEGER DEFAULT 0,
+  published_at TIMESTAMP
+);
+
+-- Audit Logs
+CREATE TABLE audit_logs (
+  id UUID PRIMARY KEY,
+  actor_id UUID REFERENCES users(id),
+  action VARCHAR(50) NOT NULL,
+  entity VARCHAR(50) NOT NULL,
+  entity_id UUID NOT NULL,
+  old_values JSONB,
+  new_values JSONB,
+  occurred_at TIMESTAMP DEFAULT NOW()
+);
+
+-- PostGIS Extensions
+ALTER TABLE parks ADD COLUMN geom geometry(MultiPolygon, 4326);
+CREATE INDEX idx_parks_geom ON parks USING GIST (geom);
+```
+
+### Navigation Updates
+
+**Public Navigation:**
+- Home, Taman, Flora, Fauna, **Artikel**, **Peta**, Kontak
+
+**Admin Navigation (Super Admin):**
+- Dashboard, Content, **Announcements**, **Audit Logs**, Settings
+
+**Admin Navigation (Regional Admin):**
+- Dashboard, Park Profile, Flora, Fauna, Activities, **Articles**
+
+---
+
 ## Kesimpulan
 
 Dokumentasi ini memberikan panduan lengkap untuk memahami dan mengembangkan frontend Taman Kehati. Sistem ini dirancang dengan prinsip:
@@ -1251,5 +1493,6 @@ Dokumentasi ini memberikan panduan lengkap untuk memahami dan mengembangkan fron
 3. **Accessibility**: Design yang inklusif untuk semua pengguna
 4. **Performance**: Optimisasi loading dan rendering
 5. **Maintainability**: Struktur code yang mudah dipelihara
+6. **Comprehensive Features**: Fitur lengkap sesuai PRD requirements
 
-Dengan mengikuti dokumentasi ini, developer dapat memahami workflow development, implementasi fitur baru, dan maintenance sistem secara efektif.
+Dengan mengikuti dokumentasi ini, developer dapat memahami workflow development, implementasi fitur baru, dan maintenance sistem secara efektif. Semua fitur telah disesuaikan dengan requirements dalam `app_summary.md` dan siap untuk implementasi MVP hingga Phase 2.

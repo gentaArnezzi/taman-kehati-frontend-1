@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, varchar } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
     id: text("id").primaryKey(),
@@ -8,6 +8,7 @@ export const user = pgTable("user", {
         .$defaultFn(() => false)
         .notNull(),
     image: text("image"),
+    regionCode: varchar("region_code", { length: 10 }), // For regional admins
     createdAt: timestamp("created_at")
         .$defaultFn(() => /* @__PURE__ */ new Date())
         .notNull(),

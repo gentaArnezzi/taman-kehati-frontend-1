@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Parkinsans } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
+import { PublicHeader } from "@/components/public-header";
+import { FloatingChatbot } from "@/components/floating-chatbot";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,9 +21,9 @@ const parkinsans = Parkinsans({
 });
 
 export const metadata: Metadata = {
-  title: "Codeguide Starter Fullstack",
+  title: "Taman Kehati - Platform Konservasi Indonesia",
   description:
-    "A modern Next.js starter with TypeScript, TailwindCSS, shadcn/ui, Better Auth, and Drizzle ORM",
+    "Platform Nasional untuk Konservasi, Edukasi, dan Pemberdayaan Keanekaragaman Hayati Indonesia",
 };
 
 export default function RootLayout({
@@ -30,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${parkinsans.variable} antialiased`}
       >
@@ -40,7 +42,18 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="flex flex-col min-h-screen">
+            <PublicHeader />
+            <main className="flex-grow">
+              {children}
+            </main>
+            <FloatingChatbot />
+            <footer className="border-t py-6 mt-12">
+              <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
+                <p>© {new Date().getFullYear()} Taman Kehati - Platform Konservasi Indonesia</p>
+              </div>
+            </footer>
+          </div>
         </ThemeProvider>
       </body>
     </html>

@@ -1,3 +1,5 @@
+# Backend Structure Document
+
 # Backend Structure Document for Taman Kehati Platform
 
 This document outlines the backend architecture, database setup, API design, hosting, infrastructure, and security measures for the Taman Kehati project. It is written in everyday language so anyone can understand how the backend works and how it supports the application.
@@ -186,3 +188,13 @@ We follow a RESTful approach under `/api`:
 ## 9. Conclusion and Overall Backend Summary
 
 The Taman Kehati backend is built on a familiar Next.js + PostgreSQL stack, leveraging serverless API Routes for flexibility and global edge distribution. Drizzle ORM and a clear folder structure keep data models and business logic clean. Managed hosting on Vercel and Supabase ensures reliability, automatic scaling, and cost efficiency. Security best practices and monitoring tools safeguard user data and uptime. This backend aligns perfectly with project goals—supporting an intuitive Admin CMS, role-based workflows, and a responsive public site—while remaining easy to maintain, extend, and secure.
+
+---
+**Document Details**
+- **Project ID**: 125b8398-fcf4-4e07-81aa-33955413dab3
+- **Document ID**: 3fbb3b55-9286-4fcc-acc9-6317030354d5
+- **Type**: custom
+- **Custom Type**: backend_structure_document
+- **Status**: completed
+- **Generated On**: 2025-10-20T15:35:24.126Z
+- **Last Updated**: N/A
